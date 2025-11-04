@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#7A0019"/>
+      <stop offset="1" stop-color="#CFA15B"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#F6F9FF"/>
+  <rect x="40" y="40" width="1120" height="550" rx="28" fill="url(#g)" opacity="0.12"/>
+  <g fill="#11131a">
+    <text x="80" y="210" font-family="'Noto Sans KR', Arial, sans-serif" font-weight="800" font-size="64" fill="#111315">백조마케팅</text>
+    <text x="80" y="280" font-family="'Noto Sans KR', Arial, sans-serif" font-size="28" fill="#111315" opacity="0.95">분양 전략 · 미디어 · 디지털 퍼포먼스 · 브랜딩</text>
+    <text x="80" y="350" font-family="'Noto Sans KR', Arial, sans-serif" font-size="22" fill="#111315" opacity="0.7">100zocp.pages.dev</text>
+  </g>
+</svg>

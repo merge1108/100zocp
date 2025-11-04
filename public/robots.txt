@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Admin UI는 검색 제외 (정적 라우트이지만 보수적으로 유지)
+Disallow: /admin/
+
+Sitemap: /sitemap-index.xml
+Sitemap: /sitemap.xml
+

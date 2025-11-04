@@ -1,0 +1,59 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+---
+<BaseLayout title="패키지/요금 | 백조마케팅" desc="상담사·분양사무소 맞춤 패키지">
+  <main id="main">
+    <section class="section">
+      <div class="container">
+        <h1 class="h2">패키지/요금</h1>
+        <p class="muted">채널·제작·태깅·리포트까지 포함한 구성을 제안합니다. 아래 금액은 운영비(부가세 별도) 예시이며, 매체비는 별도입니다.</p>
+
+        <div class="grid stack-md" style="row-gap:var(--space-4)">
+          <div class="meta span-4">
+            <div class="box-h"><span class="ico"><Icon name="layers" /></span><strong>Starter</strong></div>
+            <p class="muted">소형 사무소/단일 캠페인</p>
+            <ul>
+              <li>권장 매체비: 월 200~300만원</li>
+              <li>구글/메타 중 1~2채널</li>
+              <li>랜딩·소재 3종</li>
+              <li>기본 태깅/픽셀</li>
+              <li>주간 리포트</li>
+            </ul>
+          </div>
+          <div class="meta span-4">
+            <div class="box-h"><span class="ico"><Icon name="pie" /></span><strong>Growth</strong></div>
+            <p class="muted">중형 사무소/멀티 채널</p>
+            <ul>
+              <li>권장 매체비: 월 400~700만원</li>
+              <li>구글/메타/당근</li>
+              <li>랜딩·소재 6종</li>
+              <li>확장 태깅/UTM 표준</li>
+              <li>대시보드 + 주간/월간</li>
+            </ul>
+          </div>
+          <div class="meta span-4">
+            <div class="box-h"><span class="ico"><Icon name="zap" /></span><strong>Pro</strong></div>
+            <p class="muted">현장 중심/고객센터 연동</p>
+            <ul>
+              <li>권장 매체비: 월 800만원 이상</li>
+              <li>구글/메타/틱톡/당근</li>
+              <li>랜딩·소재 10종+</li>
+              <li>CRM 연동/콜 분배</li>
+              <li>커스텀 대시보드</li>
+            </ul>
+          </div>
+        </div>
+
+        <h2 class="h2" style="margin-top:var(--space-5)">포함/제외/옵션</h2>
+        <div class="grid stack-md" style="row-gap:var(--space-4)">
+          <div class="meta span-4"><div class="box-h"><span class="ico"><Icon name="check" /></span><strong>포함</strong></div><p class="muted">전략/셋업, 랜딩·소재 제작(범위 내), 태깅, 리포트</p></div>
+          <div class="meta span-4"><div class="box-h"><span class="ico"><Icon name="x" /></span><strong>제외</strong></div><p class="muted">매체비, 현장/콜센터 외주, 대형 촬영/CG(별도)</p></div>
+          <div class="meta span-4"><div class="box-h"><span class="ico"><Icon name="cog" /></span><strong>옵션</strong></div><p class="muted">콜센터/녹취 연동, 커스텀 대시보드, A/B 테스트 패키지</p></div>
+        </div>
+
+        <div style="margin-top:var(--space-5)"><a class="btn" href="/contact">맞춤 견적 문의</a></div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

@@ -1,0 +1,23 @@
+---
+const BRAND = "평촌 e편한캐슬 르씨엘";
+const PHONE = "1811-6828";
+---
+<footer class="section" style="padding-top:40px; border-top:1px solid var(--border)">
+  <div class="container">
+    <div class="grid stack-md" style="row-gap:var(--space-4)">
+      <div class="span-7">
+        <strong>{BRAND}</strong>
+        <p class="muted" style="margin-top:8px; font-size:var(--fz-14)">
+          본 페이지의 CG·이미지·영상은 소비자의 이해를 돕기 위한 표현으로 실제와 다를 수 있습니다.
+          개발계획·교통·커뮤니티·단지 설계는 관계기관의 인허가 진행에 따라 변경될 수 있습니다.
+        </p>
+      </div>
+      <div class="span-5">
+        <div><strong>문의</strong></div>
+        <div>대표전화 <a href={"tel:"+PHONE}>{PHONE}</a></div>
+      </div>
+    </div>
+    <p class="muted" style="margin-top:16px; font-size:12px">© {BRAND}. All rights reserved.</p>
+  </div>
+</footer>
+

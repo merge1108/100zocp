@@ -1,0 +1,41 @@
+---
+const BRAND = "백조마케팅";
+const PHONE = "1811-6828";
+const path = (Astro.url?.pathname || "/").replace(/\/$/, "") || "/";
+const isActive = (href:string) => path === href || path.startsWith(href + "/");
+---
+<header class="hdr">
+  <div class="container bar">
+    <a class="brand" href="/"><strong>{BRAND}</strong></a>
+
+    <nav aria-label="주요 메뉴">
+      <a href="/"           aria-current={isActive("/") ? "page" : undefined}>홈</a>
+      <a href="/solutions"  aria-current={isActive("/solutions") ? "page" : undefined}>솔루션</a>
+      <a href="/packages"   aria-current={isActive("/packages") ? "page" : undefined}>패키지</a>
+      <a href="/results"    aria-current={isActive("/results") ? "page" : undefined}>성과</a>
+      <a class="btn" href="/contact">상담문의</a>
+    </nav>
+
+    <button class="menu-btn" aria-controls="drawer" aria-expanded="false">메뉴</button>
+  </div>
+
+  <div id="drawer" class="drawer" role="dialog" aria-modal="true" aria-label="모바일 메뉴">
+    <a href="/">홈</a>
+    <a href="/solutions">솔루션</a>
+    <a href="/packages">패키지</a>
+    <a href="/results">성과</a>
+    <a class="btn" style="margin:10px 16px 16px" href="/contact">상담문의</a>
+  </div>
+
+  <script is:inline>
+    const btn = document.querySelector('.menu-btn');
+    const dr  = document.getElementById('drawer');
+    btn?.addEventListener('click', ()=> {
+      const on = dr?.classList.toggle('on');
+      btn?.setAttribute('aria-expanded', on ? 'true' : 'false');
+    });
+    document.querySelectorAll('a[href^="/"]').forEach(a=>{
+      a.addEventListener('click', ()=> dr?.classList.remove('on'));
+    });
+  </script>
+</header>

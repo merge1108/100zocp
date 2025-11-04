@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+
+const items = [
+  { title: "평촌 e편한캐슬 르씨엘", tag: "APT",        img: "https://picsum.photos/seed/p1/800/800" },
+  { title: "랜드마크 복합개발",       tag: "Mixed",      img: "https://picsum.photos/seed/p2/800/800" },
+  { title: "중앙역 오피스텔",        tag: "Officetel",  img: "https://picsum.photos/seed/p3/800/800" },
+  { title: "리버사이드 레지던스",    tag: "Residence",  img: "https://picsum.photos/seed/p4/800/800" },
+  { title: "브랜딩 하우스",          tag: "House",      img: "https://picsum.photos/seed/p5/800/800" },
+  { title: "복합문화 스트리트몰",     tag: "Retail",     img: "https://picsum.photos/seed/p6/800/800" },
+];
+---
+<BaseLayout title="성과/사례 | 백조마케팅" desc="실제 지표 중심의 결과와 사례">
+  <main id="main">
+    <section class="section">
+      <div class="container">
+        <h1 class="h2">성과 지표</h1>
+        <p class="muted">캠페인 목표에 따라 CPL/CPA, 예약/방문, 계약 등 핵심 지표를 설계하고 주간/월간으로 운영합니다. 아래 범위는 업권/지역/공급 규모에 따라 달라질 수 있습니다.</p>
+
+        <div class="grid stack-md" style="row-gap:var(--space-4)">
+          <div class="meta span-4"><div class="box-h"><span class="ico"><Icon name="target" /></span><strong>CPL 최적화</strong></div><p class="muted">채널/소재별 비용 효율 최적화, 저품질 리드 배제</p><p class="muted">예) 수도권 APT 2~5만원, 지방·특수상품 4~9만원</p></div>
+          <div class="meta span-4"><div class="box-h"><span class="ico"><Icon name="calendar" /></span><strong>예약/방문</strong></div><p class="muted">예약 랜딩/문자 유도·콜 체계화로 전환률 증대</p><p class="muted">리드→예약률 8~18%, 예약→방문률 40~70%</p></div>
+          <div class="meta span-4"><div class="box-h"><span class="ico"><Icon name="pie" /></span><strong>계약 기여도</strong></div><p class="muted">UTM/태깅으로 채널·크리에이티브 기여도 가시화</p><p class="muted">계정/캠페인/소재 단위의 기여도 추적</p></div>
+        </div>
+
+        <h2 class="h2" style="margin-top:var(--space-5)">측정·진단</h2>
+        <div class="grid stack-md" style="row-gap:var(--space-3)">
+          <div class="meta span-6"><div class="box-h"><span class="ico"><Icon name="check" /></span><strong>Primary</strong></div><p class="muted">전화 클릭, 예약 완료, 방문 체크(현장 연동)</p></div>
+          <div class="meta span-6"><div class="box-h"><span class="ico"><Icon name="bar" /></span><strong>Micro</strong></div><p class="muted">스크롤/체류/폼 입력/동의 등 품질 지표</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="h2" style="margin-bottom:var(--space-3)">사례 스냅샷</h2>
+        <div class="grid stack-md">
+          {items.map((it) => (
+            <figure class="card span-4">
+              <img src={it.img} alt={it.title} />
+              <figcaption class="txt">
+                <span class="kicker">{it.tag}</span>
+                <strong>{it.title}</strong>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+        <p class="muted" style="margin-top:8px">* 보안상 일부는 대체 이미지로 표기됩니다.</p>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+

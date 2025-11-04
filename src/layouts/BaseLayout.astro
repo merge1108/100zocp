@@ -1,0 +1,47 @@
+---
+type Props = { title?: string; desc?: string };
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+const { title = "백조마케팅", desc = "분양 광고 전문 에이전시" } = Astro.props;
+const site = Astro.site;
+const pathname = Astro.url?.pathname ?? "/";
+const canonical = site ? new URL(pathname, site).toString() : undefined;
+const ogImage = "/og-default.svg";
+const PHONE = "1811-6828";
+---
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={desc} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:site_name" content="백조마케팅" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={desc} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={desc} />
+    <meta name="twitter:image" content={ogImage} />
+    <link rel="stylesheet" href="/styles/theme.css">
+    <link rel="icon" href="/favicon.svg" />
+  </head>
+  <body>
+    <a href="#main" style="position:absolute;left:-9999px">본문으로 건너뛰기</a>
+    <Header />
+    <slot />
+    <Footer />
+    <div class="sticky-cta" role="region" aria-label="빠른 상담">
+      <div class="container" style="display:flex; gap:12px; align-items:center; padding:10px 0">
+        <a class="btn" href="/contact" style="flex:1; text-align:center">무료 상담</a>
+        <a class="btn outline" href={"tel:"+PHONE} style="flex:1; text-align:center">전화 {PHONE}</a>
+      </div>
+    </div>
+  </body>
+  
+</html>
