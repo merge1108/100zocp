@@ -1,16 +1,51 @@
 ---
-
+const BRAND = "평촌 롯데캐슬 르씨엘";
+const PHONE = "1811-6828";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{BRAND}</title>
+    <style>
+      :root{ --burgundy:#7A0019; --gold:#CFA15B; --paper:#FFFCF7; --ink:#11131a; }
+      body{ margin:0; background:var(--paper); color:var(--ink); font:16px/1.6 system-ui,'Noto Sans KR',sans-serif; }
+      .wrap{ max-width:960px; margin:0 auto; padding:24px; }
+      .hero{ min-height:70vh; display:grid; place-items:center; text-align:center; }
+      .btn{ display:inline-block; padding:12px 20px; border-radius:12px; color:#fff; font-weight:700;
+            background:linear-gradient(90deg,var(--burgundy),var(--gold)); text-decoration:none }
+      header{ position:sticky; top:0; background:#ffffffcc; backdrop-filter:saturate(180%) blur(12px);
+              border-bottom:1px solid #e9e7e2; padding:12px 24px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <strong>{BRAND}</strong>
+      <a class="btn" style="float:right" href={"tel:" + PHONE}>문의 {PHONE}</a>
+    </header>
+
+    <main class="wrap">
+      <section class="hero">
+        <div>
+          <h1 style="margin:0 0 12px">새로운 평촌의 스카이라인</h1>
+          <p style="margin:0 0 24px">정적 사이트 첫 배포 성공! 이제 콘텐츠만 채우면 됩니다.</p>
+          <a class="btn" href="#next">다음 섹션으로</a>
+        </div>
+      </section>
+
+      <section id="next" style="padding:40px 0">
+        <h2>배포 체크</h2>
+        <ol>
+          <li>GitHub에 푸시하면</li>
+          <li>Cloudflare Pages가 자동으로</li>
+          <li>새 버전으로 재배포합니다</li>
+        </ol>
+      </section>
+    </main>
+
+    <footer class="wrap" style="border-top:1px solid #e9e7e2; padding:24px">
+      <small>© {BRAND}</small>
+    </footer>
+  </body>
 </html>
