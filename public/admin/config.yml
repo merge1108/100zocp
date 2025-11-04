@@ -6,7 +6,7 @@ backend:
   repo: merge1108/100zocp
   branch: main
   base_url: "https://100zocp.pages.dev"
-  auth_endpoint: "/oauth/authorize"
+  auth_endpoint: "/oauth/authorize?scope=repo"
 
 publish_mode: editorial_workflow
 
