@@ -75,7 +75,7 @@ function successHtml(token: string) {
         window.opener.postMessage('authorization:github:success:' + data, '*');
         window.close();
       } else {
-        document.body.innerText = 'Token: ' + ${JSON.stringify(token)};
+        document.body.innerText = 'OAuth success. You can close this window.';
       }
     } catch (e) {
       if (window.opener) {
@@ -101,4 +101,3 @@ function errorHtml(msg: string) {
   })();
 </script>`;
 }
-
