@@ -5,12 +5,12 @@
     <meta name="robots" content="noindex" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>관리자 | Decap CMS</title>
-    <script>
-      // 명시적으로 설정 파일 경로 지정
+    <script is:inline>
+      // CMS 설정 파일 경로(동일 오리진)
       window.CMS_CONFIG_PATH = "/admin/config.yml";
     </script>
-    <script src="https://unpkg.com/decap-cms@3.0.0/dist/decap-cms.js"></script>
+    <!-- Decap CMS 본체 로드 (ESM 아님: 일반 script) -->
+    <script src="https://unpkg.com/decap-cms@3.3.0/dist/decap-cms.js"></script>
   </head>
   <body></body>
-  
 </html>
