@@ -7,7 +7,8 @@ export const onRequest: PagesFunction = async (context) => {
     return new Response("Missing GITHUB_CLIENT_ID env", { status: 500 });
   }
 
-  const redirectUri = `${url.origin}/oauth/callback`;
+  const debug = url.searchParams.get("debug");
+  const redirectUri = `${url.origin}/oauth/callback${debug ? "?debug=1" : ""}`;
   const scope = url.searchParams.get("scope") || "repo";
 
   // CSRF state
@@ -29,4 +30,3 @@ export const onRequest: PagesFunction = async (context) => {
   );
   return new Response(null, { status: 302, headers });
 };
-

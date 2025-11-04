@@ -3,6 +3,7 @@ export const onRequest: PagesFunction = async (context) => {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
+  const debug = url.searchParams.get("debug") === "1";
 
   const clientId: string | undefined = env.GITHUB_CLIENT_ID;
   const clientSecret: string | undefined = env.GITHUB_CLIENT_SECRET;
@@ -21,10 +22,12 @@ export const onRequest: PagesFunction = async (context) => {
       })
   );
   if (!state || !cookies["oauth_state"] || cookies["oauth_state"] !== state) {
+    if (debug) return htmlResponse(debugHtml({ step: 'state', ok: false, state, cookieState: cookies["oauth_state"] }), 400, true);
     return htmlResponse(errorHtml("Invalid state"), 400, true);
   }
 
   if (!code) {
+    if (debug) return htmlResponse(debugHtml({ step: 'code', ok: false, msg: 'Missing code' }), 400, true);
     return htmlResponse(errorHtml("Missing code"), 400, true);
   }
 
@@ -41,13 +44,14 @@ export const onRequest: PagesFunction = async (context) => {
     }),
   });
 
-  const data = await tokenRes.json<any>();
+  const data = await tokenRes.json();
   if (!tokenRes.ok || !data.access_token) {
+    if (debug) return htmlResponse(debugHtml({ step: 'exchange', ok: false, status: tokenRes.status, data }), 500, true);
     return htmlResponse(errorHtml("Token exchange failed"), 500, true);
   }
 
   const token = data.access_token as string;
-  const body = successHtml(token);
+  const body = debug ? debugHtml({ step:'success', ok:true, tokenPrefix: token.slice(0,6), tokenLen: token.length }) : successHtml(token);
   // Clear state cookie
   const headers = new Headers({ "Content-Type": "text/html; charset=utf-8" });
   headers.append(
@@ -100,4 +104,16 @@ function errorHtml(msg: string) {
     }
   })();
 </script>`;
+}
+
+function debugHtml(info: any) {
+  const safe = (o: any) => JSON.stringify(o, null, 2)
+    .replace(/[<>&]/g, (c) => ({'<':'&lt;','>':'&gt;','&':'&amp;'} as any)[c]);
+  return `<!doctype html><meta charset="utf-8" />
+<title>OAuth Debug</title>
+<body style="font:14px/1.5 ui-sans-serif,system-ui; padding:16px;">
+  <h1>OAuth Debug</h1>
+  <pre>${safe(info)}</pre>
+  <p>이 페이지는 debug=1일 때만 표시됩니다. 정상 플로우에서는 팝업이 자동 닫힙니다.</p>
+</body>`;
 }
