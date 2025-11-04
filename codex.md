@@ -63,6 +63,20 @@
 - `_redirects` 지원(Cloudflare Pages/Netlify 호환)
 - OG 기본 이미지는 `public/og-default.svg` (PNG/JPG로 교체 가능)
 
+### Decap + GitHub OAuth (Cloudflare Pages Functions)
+- OAuth 엔드포인트 구현: `functions/oauth/authorize.ts`, `functions/oauth/callback.ts`
+- 환경변수(Cloudflare Pages → 프로젝트 → Settings → Environment variables)
+  - `GITHUB_CLIENT_ID`: GitHub OAuth App의 Client ID
+  - `GITHUB_CLIENT_SECRET`: GitHub OAuth App의 Client Secret
+- GitHub OAuth App 설정
+  - Authorization callback URL: `https://100zocp.pages.dev/oauth/callback`
+- CMS 설정(`public/admin/config.yml`, `public/config.yml`)
+  - `backend.name: github`
+  - `repo: merge1108/100zocp`, `branch: main`
+  - `base_url: https://100zocp.pages.dev`
+  - `auth_endpoint: /oauth/authorize`
+- 동작 방식: /admin → GitHub 로그인 → 토큰 교환 → popup이 parent에 `postMessage('authorization:github:success:{token}')`
+
 ## 리드 수집 플로우
 - 폼 Action: Make.com Webhook (FORM_ENDPOINT)
 - 전달 파라미터: phone, route, budget, cpl, channels, pkg

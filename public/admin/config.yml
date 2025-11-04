@@ -1,9 +1,11 @@
-local_backend: true  # 로컬에서 CMS 테스트 시 사용
+local_backend: true  # 로컬 개발 시만 동작
 
 backend:
   name: github
-  repo: merge1108/my-landing  # 본인 GitHub 저장소
+  repo: merge1108/100zocp
   branch: main
+  base_url: "https://100zocp.pages.dev"
+  auth_endpoint: "/oauth/authorize"
 
 publish_mode: editorial_workflow
 
@@ -36,4 +38,3 @@ collections:
       - { label: "대표 이미지", name: "image",   widget: "image" }
       - { label: "ALT 텍스트",  name: "alt",     widget: "string" }
       - { label: "요약",        name: "summary", widget: "text", required: false }
-
