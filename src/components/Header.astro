@@ -1,30 +1,42 @@
 ---
-const BRAND = "백조마케팅";
-const PHONE = "1811-6828";
+import site from "../content/site.json";
+const DEFAULT_NAV = [
+  { label: "홈", href: "/" },
+  { label: "솔루션", href: "/solutions" },
+  { label: "패키지", href: "/packages" },
+  { label: "포트폴리오", href: "/portfolio" },
+  { label: "상담문의", href: "/contact", cta: true },
+];
+const BRAND = (site as any)?.brand || "백조마케팅";
+const NAV = Array.isArray((site as any)?.nav) && (site as any).nav.length ? (site as any).nav : DEFAULT_NAV;
 const path = (Astro.url?.pathname || "/").replace(/\/$/, "") || "/";
 const isActive = (href:string) => path === href || path.startsWith(href + "/");
 ---
-<header class="hdr">
+<header class="hdr" role="banner">
   <div class="container bar">
     <a class="brand" href="/"><strong>{BRAND}</strong></a>
 
     <nav aria-label="주요 메뉴">
-      <a href="/"           aria-current={isActive("/") ? "page" : undefined}>홈</a>
-      <a href="/solutions"  aria-current={isActive("/solutions") ? "page" : undefined}>솔루션</a>
-      <a href="/packages"   aria-current={isActive("/packages") ? "page" : undefined}>패키지</a>
-      <a href="/results"    aria-current={isActive("/results") ? "page" : undefined}>성과</a>
-      <a class="btn" href="/contact">상담문의</a>
+      {NAV.map((it:any) => (
+        it.cta ? (
+          <a class="btn" href={it.href} aria-current={isActive(it.href)?"page":undefined}>{it.label}</a>
+        ) : (
+          <a href={it.href} aria-current={isActive(it.href)?"page":undefined}>{it.label}</a>
+        )
+      ))}
     </nav>
 
     <button class="menu-btn" aria-controls="drawer" aria-expanded="false">메뉴</button>
   </div>
 
   <div id="drawer" class="drawer" role="dialog" aria-modal="true" aria-label="모바일 메뉴">
-    <a href="/">홈</a>
-    <a href="/solutions">솔루션</a>
-    <a href="/packages">패키지</a>
-    <a href="/results">성과</a>
-    <a class="btn" style="margin:10px 16px 16px" href="/contact">상담문의</a>
+    {NAV.map((it:any) => (
+      it.cta ? (
+        <a class="btn" style="margin:10px 16px 16px" href={it.href}>{it.label}</a>
+      ) : (
+        <a href={it.href}>{it.label}</a>
+      )
+    ))}
   </div>
 
   <script is:inline>
@@ -34,7 +46,7 @@ const isActive = (href:string) => path === href || path.startsWith(href + "/");
       const on = dr?.classList.toggle('on');
       btn?.setAttribute('aria-expanded', on ? 'true' : 'false');
     });
-    document.querySelectorAll('a[href^="/"]').forEach(a=>{
+    document.querySelectorAll('a[href^="/\"]').forEach(a=>{
       a.addEventListener('click', ()=> dr?.classList.remove('on'));
     });
   </script>

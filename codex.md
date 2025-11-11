@@ -102,3 +102,62 @@
 
 ---
 본 문서(codex.md)는 제작/운영 인수인계를 위한 요약입니다. 변경/추가 요청은 이 문서 하단 TODO에 기록 후 이슈 트래킹으로 이어가길 권장합니다.
+
+## 이슈 추적 로그(CMS/OAuth/Access)
+
+### 증상·원인·조치 타임라인
+- /admin 404(config.yml) → 원인: CMS 설정 경로 부재. 조치: `public/config.yml` 추가, `src/pages/admin/index.astro` 생성, `window.CMS_CONFIG_PATH="/admin/config.yml"` 명시.
+- GitHub 로그인 버튼 후 Not Found → 원인: Netlify 경로(기본)로 시도. 조치: Cloudflare Pages Functions로 `/oauth/authorize`, `/oauth/callback` 구현. `base_url`, `auth_endpoint`를 CMS 설정에 반영.
+- Invalid state/흰 화면 → 원인: state 쿠키 불일치/팝업 흐름 문제 가능. 조치: 콜백 디버그 모드 추가(`?debug=1`), state 검사/결과 출력. `/oauth*`는 우선 보호 안 함 권장, 브라우저 쿠키/스토리지 초기화 후 재시도.
+- Token exchange failed(incorrect_client_credentials) → 원인: GITHUB_CLIENT_ID/SECRET 오입력 또는 재배포 누락. 조치: GitHub OAuth App에서 Callback https 확인, 새 Client Secret 발급 → CF Pages 환경변수(Production) 저장 → Save & Deploy(또는 빈 커밋 푸시)로 재배포. 이후 `authorize?debug=1`→`callback?debug=1`에서 step: success 확인.
+- CMS message success지만 전환 안 됨(네트워크에 api.github.com 없음) → 원인: Decap CMS 본체 스크립트 미로드. 조치: `src/pages/admin/index.astro`에 `https://unpkg.com/decap-cms@3.3.0/dist/decap-cms.js` 명시적 로드. 하드 리로드/시크릿 모드 권장.
+- 여전히 전환 지연/304 응답 → 설명: 정적 자산(config.yml, _astro js) 304는 정상(캐시 적중). 전환 판단은 api.github.com 호출 여부로 확인해야 함.
+
+### 현재 동작 설정(요약)
+- OAuth Functions: `functions/oauth/authorize.ts`, `functions/oauth/callback.ts` (state 쿠키, token 교환, postMessage 전달, 디버그 모드 지원)
+- 환경변수: CF Pages Production → `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`(정확 입력·재배포 필요)
+- CMS 설정: `public/admin/config.yml`, `public/config.yml`
+  - backend.name: github
+  - repo: merge1108/100zocp, branch: main
+  - base_url: https://100zocp.pages.dev
+  - auth_endpoint: /oauth/authorize?scope=repo
+  - local_backend: (프로덕션 비활성)
+- Access(Zero Trust): 100zocp.pages.dev/admin* 만 Allow(+Include 편집자 이메일, Require MFA 등). `/oauth*`는 먼저 보호 해제·정상화 확인 후 필요 시 추가.
+
+### 운영 Runbook(A→Z)
+1) GitHub OAuth App
+   - Callback: `https://100zocp.pages.dev/oauth/callback`
+   - Client ID/Secret 확인(필요 시 새 Secret 발급)
+2) CF Pages 환경변수
+   - Production에 `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` 저장 → Save & Deploy
+3) 디버그로 토큰 교환 확인
+   - `…/oauth/authorize?scope=repo&debug=1` → 승인 → `…/oauth/callback?debug=1`
+   - step: success, ok: true 확인
+4) /admin 로그인
+   - `…/admin` → “Login with GitHub”
+   - 콘솔에서 수신 확인: `authorization:github:success:{token}`
+   - 네트워크에 `api.github.com/user`, `…/repos/merge1108/100zocp` 호출 등장(200)
+5) 권한 확인(편집/저장 막힐 때)
+   - 승인한 GitHub 계정이 저장소에 Write 권한인지(개인 저장소는 Collaborator 초대/수락)
+   - 콘솔 테스트:
+     - `fetch('https://api.github.com/user',{headers:{Authorization:'Bearer TOKEN'}})` → 200
+     - `fetch('https://api.github.com/repos/merge1108/100zocp',{headers:{Authorization:'Bearer TOKEN'}})` → 200
+     - `…then(j=>j.permissions)` → `push: true`
+6) 문제시 공통 조치
+   - 브라우저: `localStorage.clear(); sessionStorage.clear();` + `oauth_state` 쿠키 제거 + 강력 새로고침
+   - 팝업 차단 해제, 시크릿 모드 재시도
+   - `/admin/config.yml` 200 확인(backend 설정 일치)
+
+### 자주 발생 이슈와 해결
+- incorrect_client_credentials: Client Secret/ID 불일치 또는 재배포 잊음 → 새 Secret 발급·환경변수 저장·재배포
+- Invalid state: 쿠키/세션 꼬임 또는 `/oauth*`에 Access 인증 개입 → 쿠키/스토리지 초기화, `/oauth*` 보호 해제 후 재시도
+- success 메시지인데 전환 X: CMS 본체 미로드/캐시 → `decap-cms.js` 로드 확인, 하드 리로드, 시크릿 모드
+- 401/403/404(API): 토큰/권한 이슈 → 올바른 계정으로 재승인, 저장소 Write 권한(협업자 초대/수락)
+- 토큰 노출: GitHub → Settings → Applications → Authorized OAuth Apps에서 해당 앱 `Revoke access` 후 재승인
+
+### 확인 체크리스트(요약)
+- [ ] `…/oauth/callback?debug=1` → step: success
+- [ ] /admin 콘솔에 success 메시지 수신
+- [ ] 네트워크에 api.github.com 호출 200
+- [ ] 저장소 permissions.push === true
+- [ ] `/admin/config.yml` 200 + backend 설정 일치

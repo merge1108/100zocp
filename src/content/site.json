@@ -1,0 +1,11 @@
+{
+  "brand": "백조마케팅",
+  "phone": "1811-6828",
+  "nav": [
+    { "label": "홈", "href": "/" },
+    { "label": "솔루션", "href": "/solutions" },
+    { "label": "패키지", "href": "/packages" },
+    { "label": "포트폴리오", "href": "/portfolio" },
+    { "label": "상담문의", "href": "/contact", "cta": true }
+  ]
+}

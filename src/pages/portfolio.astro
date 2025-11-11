@@ -1,0 +1,86 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+
+const items = [
+  { title: "해링턴플레이스 풍무", summary: "영상 제작과 구글/메타 광고 집행", videoId: "" },
+  { title: "용인푸르지오원클러스터2,3단지", summary: "영상 제작과 구글/메타 광고 집행", videoId: "" },
+  { title: "라피아노스위첸양주옥정", summary: "영상 제작과 구글/메타 광고 집행", videoId: "" },
+  { title: "호매실스카이시티", summary: "영상 제작과 구글/메타 광고 집행", videoId: "" },
+  { title: "용인고진역대광로제비앙", summary: "영상 제작과 구글/메타 광고 집행", videoId: "" },
+  { title: "인천용현우방아이유쉘", summary: "영상 제작과 구글/메타 광고 집행", videoId: "" },
+  { title: "청주센텀푸르지오자이", summary: "영상 제작과 구글/메타 광고 집행", videoId: "" },
+  { title: "이천베네스트클러스터원부발역", summary: "영상 제작과 구글/메타 광고 집행", videoId: "" },
+  { title: "대야미역금강펜테리움", summary: "영상 제작과 구글/메타 광고 집행", videoId: "" },
+  { title: "전곡제일풍경채리버파크", summary: "영상 제작과 구글/메타 광고 집행", videoId: "" },
+  { title: "천안파크포레", summary: "영상 제작과 구글/메타 광고 집행", videoId: "" },
+  { title: "검단센트레빌에듀시티", summary: "영상 제작과 구글/메타 광고 집행", videoId: "" },
+  { title: "평촌롯데캐슬르씨엘", summary: "영상 제작과 구글/메타 광고 집행", videoId: "" },
+  { title: "이천신안실크밸리", summary: "영상 제작과 구글/메타 광고 집행", videoId: "" },
+  { title: "인천학익루미엘", summary: "영상 제작과 구글/메타 광고 집행", videoId: "" },
+  { title: "평택브레인시티메디스파크", summary: "영상 제작과 구글/메타 광고 집행", videoId: "" },
+  { title: "이수더써밋", summary: "영상 제작과 구글/메타 광고 집행", videoId: "" },
+];
+
+const toSeed = (s:string)=> encodeURIComponent(s);
+---
+
+<BaseLayout title="포트폴리오 | 백조마케팅" desc="분양 광고 포트폴리오">
+  <main id="main">
+    <section class="section">
+      <div class="container">
+        <h1 class="h2" style="margin-bottom:var(--space-3)">포트폴리오</h1>
+        <p class="muted">실제 진행한 단지와 캠페인 일부입니다. 이미지는 예시로 대체되어 있습니다.</p>
+        <div class="grid stack-md" style="row-gap:var(--space-4)">
+          {items.map((it)=> (
+            <figure class="card span-4 video-card" role="button" tabindex="0" aria-label={`${it.title} 영상 보기`} data-video={it.videoId} data-link={`/contact?item=${toSeed(it.title)}`}>
+              <img src={`https://picsum.photos/seed/${toSeed(it.title)}/800/800`} alt={`${it.title} 목업 이미지`} />
+              <div class="overlay" aria-hidden="true">
+                <span class="play"><Icon name="play" size={28} /></span>
+              </div>
+              <figcaption class="txt">
+                <span class="kicker">APT</span>
+                <strong>{it.title}</strong>
+                <small class="muted" style="display:block">{it.summary}</small>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+        <div style="margin-top:var(--space-5)"><a class="btn" href="/contact">상담문의</a></div>
+      </div>
+    </section>
+    <div id="vmodal" class="video-modal" role="dialog" aria-modal="true" aria-label="영상 재생">
+      <div class="box">
+        <button class="close" aria-label="닫기">✕</button>
+        <iframe id="vframe" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen title="portfolio video"></iframe>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<script is:inline>
+  const m = document.getElementById('vmodal');
+  const f = document.getElementById('vframe');
+  const open = (vid)=>{
+    if(!vid){ location.href = '/contact'; return; }
+    const src = `https://www.youtube.com/embed/${vid}?autoplay=1&rel=0`;
+    f?.setAttribute('src', src);
+    m?.classList.add('on');
+  };
+  const close = ()=>{
+    f?.setAttribute('src','');
+    m?.classList.remove('on');
+  };
+  document.querySelectorAll('.video-card').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      const vid = card.getAttribute('data-video');
+      const link = card.getAttribute('data-link');
+      if(vid){ open(vid); } else if(link){ location.href = link; } else { location.href = '/contact'; }
+    });
+    card.addEventListener('keydown', (e)=>{
+      if(e.key==='Enter' || e.key===' '){ e.preventDefault(); card.click(); }
+    });
+  });
+  m?.addEventListener('click', (e)=>{ if(e.target===m) close(); });
+  m?.querySelector('.close')?.addEventListener('click', close);
+</script>

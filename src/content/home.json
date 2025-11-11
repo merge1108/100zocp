@@ -1,6 +1,23 @@
-﻿{
-  "headline": "분양 성과를 만드는 파트너, 데이터로 설계합니다.",
-  "subcopy": "지표·추적 기반의 전략/크리에이티브/집행/리포팅을 원팀으로 제공합니다.",
-  "cta_text": "무료 상담",
-  "cta_link": "/contact"
+{
+  "hero_title": "영상과 광고를 한 번에, 쉽고 빠르게.",
+  "hero_support": "유튜브 영상 제작, 구글·메타 광고 집행, 성과 추적과 사후 관리까지 한 번에 맡기세요.",
+  "hero_badges": ["3일 내 업로드 목표", "상담 무료", "전화 중심 성과 추적"],
+  "hero_cta": {
+    "primary": { "text": "상담문의", "link": "/contact" },
+    "secondary": [
+      { "text": "패키지 보기", "link": "/packages" },
+      { "text": "포트폴리오", "link": "/portfolio" }
+    ]
+  },
+  "what_we_do": [
+    { "kicker": "제작", "title": "유튜브 영상 제작", "image": "https://picsum.photos/seed/video/800/800", "alt": "유튜브 영상 제작" },
+    { "kicker": "광고", "title": "구글/메타 광고 집행", "image": "https://picsum.photos/seed/ads/800/800", "alt": "광고 집행" },
+    { "kicker": "관리", "title": "성과 추적 및 사후 관리", "image": "https://picsum.photos/seed/report/800/800", "alt": "성과 추적" }
+  ],
+  "about": [
+    { "kicker": "원스톱", "title": "원스톱 광고대행", "image": "https://picsum.photos/seed/onestop/800/800", "alt": "원스톱 광고대행" },
+    { "kicker": "제작", "title": "촬영 · 편집 · 집행", "image": "https://picsum.photos/seed/process/800/800", "alt": "제작 체계" },
+    { "kicker": "리포트", "title": "주간·종료 보고", "image": "https://picsum.photos/seed/reporting/800/800", "alt": "리포트" }
+  ]
 }
+

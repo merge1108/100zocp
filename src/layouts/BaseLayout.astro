@@ -1,13 +1,14 @@
 ---
-type Props = { title?: string; desc?: string };
+type Props = { title?: string; desc?: string; og?: string };
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-const { title = "백조마케팅", desc = "분양 광고 전문 에이전시" } = Astro.props;
+import siteData from "../content/site.json";
+const { title = "백조마케팅", desc = "분양 광고 원스톱", og } = Astro.props as Props;
 const site = Astro.site;
 const pathname = Astro.url?.pathname ?? "/";
 const canonical = site ? new URL(pathname, site).toString() : undefined;
-const ogImage = "/og-default.svg";
-const PHONE = "1811-6828";
+const ogImage = og || "/og-default.svg";
+const PHONE = (siteData as any)?.phone || "1811-6828";
 ---
 <!doctype html>
 <html lang="ko">
@@ -38,10 +39,42 @@ const PHONE = "1811-6828";
     <Footer />
     <div class="sticky-cta" role="region" aria-label="빠른 상담">
       <div class="container" style="display:flex; gap:12px; align-items:center; padding:10px 0">
-        <a class="btn" href="/contact" style="flex:1; text-align:center">무료 상담</a>
-        <a class="btn outline" href={"tel:"+PHONE} style="flex:1; text-align:center">전화 {PHONE}</a>
+        <a class="btn" href="/contact" style="flex:1; text-align:center" data-cta="sticky_contact">무료 상담</a>
+        <a class="btn outline" href={"tel:"+PHONE} style="flex:1; text-align:center" data-cta="sticky_call">전화 {PHONE}</a>
       </div>
     </div>
+
+    <script is:inline>
+      // Lightweight instrumentation aligned to provided spec
+      window.dataLayer = window.dataLayer || [];
+      function track(event, payload){
+        window.dataLayer.push({ event, ts: Date.now(), ...payload });
+        // For dev visibility
+        if (console && console.debug) console.debug('[track]', event, payload);
+      }
+      // CTA clicks
+      document.addEventListener('click', (e)=>{
+        const a = e.target.closest('[data-cta]');
+        if(a){ track('hero_cta_click', { label: a.getAttribute('data-cta'), lang:'ko' }); }
+      });
+      // Section views via IntersectionObserver
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(en=>{
+          if(en.isIntersecting && en.intersectionRatio > 0.5){
+            const id = en.target.getAttribute('data-section-id');
+            if(id){ track('section_view', { section_id:id, depth_percent: Math.round((window.scrollY/(document.body.scrollHeight-window.innerHeight))*100) }); }
+          }
+        });
+      }, { threshold:[0.5] });
+      document.querySelectorAll('[data-section-id]').forEach(el=> io.observe(el));
+      // Scroll checkpoints
+      const cps = [25,50,75,95];
+      const fired = new Set();
+      window.addEventListener('scroll', ()=>{
+        const depth = Math.round((window.scrollY/(document.body.scrollHeight-window.innerHeight))*100);
+        cps.forEach(p=>{ if(depth>=p && !fired.has(p)){ fired.add(p); track('scroll_checkpoint',{ percent:p }); } });
+      }, { passive:true });
+    </script>
   </body>
   
 </html>

@@ -1,3 +1,5 @@
+local_backend: true
+
 backend:
   name: github
   repo: merge1108/100zocp
@@ -7,8 +9,8 @@ backend:
 
 publish_mode: editorial_workflow
 
-media_folder: "public/uploads"   # 저장소 내 업로드 경로
-public_folder: "/uploads"        # 사이트에서 보이는 경로
+media_folder: "public/uploads"
+public_folder: "/uploads"
 
 collections:
   - name: "site"
@@ -18,21 +20,22 @@ collections:
         label: "홈"
         file: "src/content/home.json"
         fields:
-          - { label: "헤드라인",   name: "headline", widget: "string" }
-          - { label: "서브카피",   name: "subcopy",  widget: "text", required: false }
-          - { label: "CTA 텍스트", name: "cta_text", widget: "string" }
-          - { label: "CTA 링크",   name: "cta_link", widget: "string", default: "/contact" }
+          - { label: "헤드라인", name: "headline", widget: "string" }
+          - { label: "서브카피", name: "subcopy", widget: "text", required: false }
+          - { label: "CTA 문구", name: "cta_text", widget: "string" }
+          - { label: "CTA 링크", name: "cta_link", widget: "string", default: "/contact" }
 
   - name: "cases"
-    label: "성과/사례"
+    label: "포트폴리오"
     label_singular: "사례"
     folder: "src/content/cases"
     create: true
     slug: "{{slug}}"
     extension: "json"
     fields:
-      - { label: "제목",        name: "title",   widget: "string" }
-      - { label: "카테고리",    name: "kicker",  widget: "string" }
-      - { label: "대표 이미지", name: "image",   widget: "image" }
-      - { label: "ALT 텍스트",  name: "alt",     widget: "string" }
-      - { label: "요약",        name: "summary", widget: "text", required: false }
+      - { label: "제목", name: "title", widget: "string" }
+      - { label: "카테고리", name: "kicker", widget: "string" }
+      - { label: "대표이미지", name: "image", widget: "image" }
+      - { label: "ALT 텍스트", name: "alt", widget: "string" }
+      - { label: "요약", name: "summary", widget: "text", required: false }
+

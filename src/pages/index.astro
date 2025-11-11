@@ -1,89 +1,63 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import home from "../content/home.json";
+import Icon from "../components/Icon.astro";
+import homeData from "../content/home.json";
 
 const modules = import.meta.glob("../content/cases/*.json", { eager: true });
 const cases = Object.values(modules).map((m: any) => (m as any).default);
+const home:any = homeData as any;
+const heroTitle = home?.hero_title || "영상과 광고를 한 번에, 쉽고 빠르게.";
+const heroSupport = home?.hero_support || "유튜브 영상 제작, 구글·메타 광고 집행, 성과 추적과 사후 관리까지 한 번에 맡기세요.";
+const heroBadges:string[] = Array.isArray(home?.hero_badges) ? home.hero_badges : ["3일 내 업로드 목표","상담 무료","전화 중심 성과 추적"];
+const ctas = home?.hero_cta || { primary:{text:"상담문의",link:"/contact"}, secondary:[{text:"패키지 보기",link:"/packages"},{text:"포트폴리오",link:"/portfolio"}] };
+const what = Array.isArray(home?.what_we_do) ? home.what_we_do : [
+  { kicker:"제작", title:"유튜브 영상 제작", image:"https://picsum.photos/seed/video/800/800", alt:"유튜브 영상 제작" },
+  { kicker:"광고", title:"구글/메타 광고 집행", image:"https://picsum.photos/seed/ads/800/800", alt:"광고 집행" },
+  { kicker:"관리", title:"성과 추적 및 사후 관리", image:"https://picsum.photos/seed/report/800/800", alt:"성과 추적" }
+];
+const about = Array.isArray(home?.about) ? home.about : [
+  { kicker:"원스톱", title:"원스톱 광고대행", image:"https://picsum.photos/seed/onestop/800/800", alt:"원스톱 광고대행" },
+  { kicker:"제작", title:"촬영 · 편집 · 집행", image:"https://picsum.photos/seed/process/800/800", alt:"제작 체계" },
+  { kicker:"리포트", title:"주간·종료 보고", image:"https://picsum.photos/seed/reporting/800/800", alt:"리포트" }
+];
 ---
 
-<BaseLayout title="백조마케팅 | 분양 광고 전문 에이전시" desc="분양 전략·미디어·디지털 퍼포먼스·브랜딩·크리에이티브">
+<BaseLayout title={(home?.seo?.title || heroTitle) + " | 백조마케팅"} desc={home?.seo?.description || heroSupport} og={home?.seo?.og_image}>
   <main id="main">
     <!-- HERO -->
-    <section class="hero">
+    <section class="hero" data-section-id="hero">
       <div class="copy container">
-        <h1 class="h1">인터넷 기반 분양 마케팅</h1>
-        <p class="lead">구글·메타·틱톡·당근 중심, 상담사·분양사무소 전용 설계</p>
-        <div style="display:flex; gap:var(--space-3); flex-wrap:wrap; align-items:flex-start">
-          <div class="panel-dark" style="flex:1; min-width:280px; max-width:520px">
-            <h3>견적 계산기</h3>
-            <div class="row">
-              <div style="flex:1; min-width:180px">
-                <label for="budget">월 매체비(만원)</label>
-                <input id="budget" type="number" min="100" step="50" value="300" />
-              </div>
-              <div style="flex:1; min-width:180px">
-                <label for="cpl">목표 CPL(만원)</label>
-                <select id="cpl">
-                  <option value="2.5">2.5</option>
-                  <option value="3" selected>3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                </select>
-              </div>
-            </div>
-            <label>채널</label>
-            <div class="row">
-              <label><input type="checkbox" class="ch" value="google" checked /> 구글</label>
-              <label><input type="checkbox" class="ch" value="meta" checked /> 메타</label>
-              <label><input type="checkbox" class="ch" value="tiktok" /> 틱톡</label>
-              <label><input type="checkbox" class="ch" value="daangn" /> 당근</label>
-            </div>
-            <div class="row" style="margin-top:10px">
-              <div style="flex:1; min-width:160px">
-                <label>예상 리드수</label>
-                <div id="leads" style="font-weight:800; font-size:var(--fz-24)">-</div>
-              </div>
-              <div style="flex:1; min-width:160px">
-                <label>권장 패키지</label>
-                <div id="pkg" style="font-weight:800; font-size:var(--fz-24)">-</div>
-              </div>
-            </div>
-            <div class="row">
-              <div style="flex:1; min-width:160px">
-                <label>예상 운영비(만원)</label>
-                <div id="op" style="font-weight:700">-</div>
-                <small>※ 운영비 예시는 패키지 기준·부가세 별도</small>
-              </div>
-              <div style="align-self:end">
-                <a id="quoteBtn" class="btn" href="/contact">견적 요청</a>
-              </div>
-            </div>
-          </div>
-          <div>
-            <a class="btn" href="/packages">패키지 보기</a>
-            <a class="btn outline" style="margin-left:12px" href="/portfolio">포트폴리오</a>
-          </div>
+        <h1 class="h1">{heroTitle}</h1>
+        <p class="lead">{heroSupport}</p>
+        <div class="badges" aria-label="핵심 가치">
+          {heroBadges.map(b => (<span class="badge"><span class="dot" aria-hidden="true"></span> {b}</span>))}
+        </div>
+        <div style="margin-top:16px; display:flex; gap:12px; flex-wrap:wrap">
+          <a class="btn" href={ctas.primary?.link || "/contact"} data-cta="hero_primary">{ctas.primary?.text || "상담문의"}</a>
+          {(ctas.secondary||[]).map((s:any, i:number)=> (<a class="btn outline" href={s.link} data-cta={`hero_secondary_${i}`}>{s.text}</a>))}
         </div>
       </div>
     </section>
 
-    <!-- 무엇을 제공하나요 -->
-    <section class="section">
+    <!-- 무엇을 제공하나요? (이미지 카드) -->
+    <section class="section" data-section-id="what_we_do">
       <div class="container">
-        <h2 class="h2" style="margin-bottom:var(--space-3)">무엇을 제공하나요</h2>
-        <div class="grid stack-md" style="row-gap:var(--space-4)">
-          <div class="meta span-4"><strong>전략/미디어</strong><p class="muted">수요/경쟁 분석 기반의 채널 믹스, 예산 배분, KPI 설계</p></div>
-          <div class="meta span-4"><strong>크리에이티브</strong><p class="muted">KV·카피·랜딩·영상/CG·그래픽까지 일원화된 제작</p></div>
-          <div class="meta span-4"><strong>퍼포먼스</strong><p class="muted">추적/태깅·전환 최적화·실시간 대시보드/리포팅</p></div>
+        <h2 class="h2" style="margin-bottom:var(--space-3)">무엇을 제공하나요?</h2>
+        <div class="grid stack-md">
+          {what.map((w:any) => (
+            <figure class="card span-4">
+              <img src={w.image} alt={w.alt} />
+              <figcaption class="txt"><span class="kicker">{w.kicker}</span><strong>{w.title}</strong></figcaption>
+            </figure>
+          ))}
         </div>
       </div>
     </section>
 
-    <!-- 성과/사례 -->
-    <section class="section">
+    <!-- 포트폴리오 미리보기 -->
+    <section class="section" data-section-id="portfolio_preview">
       <div class="container">
-        <h2 class="h2" style="margin-bottom:var(--space-3)">성과/사례</h2>
+        <h2 class="h2" style="margin-bottom:var(--space-3)">포트폴리오</h2>
         <div class="grid stack-md">
           {cases.map((c: any) => (
             <figure class="card span-4">
@@ -98,74 +72,20 @@ const cases = Object.values(modules).map((m: any) => (m as any).default);
       </div>
     </section>
 
-    <!-- 파트너십 원칙 -->
-    <section class="section">
-      <div class="container">
-        <h2 class="h2" style="margin-bottom:var(--space-3)">파트너십 원칙</h2>
-        <div class="grid stack-md" style="row-gap:var(--space-4)">
-          <div class="meta span-6"><strong>투명성</strong><p class="muted">성과 지표·예산·소재 테스트 결과를 실시간으로 공유합니다.</p></div>
-          <div class="meta span-6"><strong>속도</strong><p class="muted">기획–제작–집행–리포트의 사이클을 짧게 가져갑니다.</p></div>
-          <div class="meta span-6"><strong>데이터</strong><p class="muted">정확한 태깅과 추적으로 의사결정을 데이터에서 시작합니다.</p></div>
-          <div class="meta span-6"><strong>현장 연동</strong><p class="muted">콜센터/현장과 연계하여 리드 품질까지 추적합니다.</p></div>
-        </div>
-        <div style="margin-top:var(--space-5);display:flex;gap:12px;flex-wrap:wrap">
-          <a class="btn" href="/contact">무료 상담</a>
-          <a class="btn outline" href="/solutions">솔루션 보기</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- 회사소개 -->
-    <section class="section">
+    <!-- 회사소개 (사진형 카드) -->
+    <section class="section" data-section-id="about">
       <div class="container">
         <h2 class="h2" style="margin-bottom:var(--space-3)">회사소개</h2>
-        <p class="muted">데이터 기반 전략과 크리에이티브, 그리고 빠른 실행으로 분양 성과를 만듭니다.</p>
+        <p class="muted">원스톱 광고대행으로 기획·제작·집행을 빠르게 연결합니다.</p>
         <div class="grid stack-md">
-          <div class="meta span-4"><strong>부동산 특화</strong><p class="muted">분양/오피스텔/리테일 전문</p></div>
-          <div class="meta span-4"><strong>풀퍼널</strong><p class="muted">브랜딩 → 퍼포먼스 일원화</p></div>
-          <div class="meta span-4"><strong>초경량 퍼블리싱</strong><p class="muted">SSG/CDN · 빠른 로딩</p></div>
-          <div class="meta span-4"><strong>투명 리포트</strong><p class="muted">실시간/주간/월간</p></div>
-          <div class="meta span-4"><strong>현장/콜 연동</strong><p class="muted">리드관리/CRM 연계</p></div>
-          <div class="meta span-4"><strong>제작 체계</strong><p class="muted">KV/영상/CG 인하우스</p></div>
+          {about.map((a:any) => (
+            <figure class="card span-4">
+              <img src={a.image} alt={a.alt} />
+              <figcaption class="txt"><span class="kicker">{a.kicker}</span><strong>{a.title}</strong></figcaption>
+            </figure>
+          ))}
         </div>
       </div>
     </section>
   </main>
 </BaseLayout>
-
-<script is:inline>
-  const $ = (s)=>document.querySelector(s);
-  const budgetEl = $('#budget');
-  const cplEl = $('#cpl');
-  const leadsEl = $('#leads');
-  const pkgEl = $('#pkg');
-  const opEl = $('#op');
-  const quoteBtn = $('#quoteBtn');
-  const chEls = Array.from(document.querySelectorAll('.ch'));
-
-  function recommendPkg(budget){
-    if(budget >= 800) return 'Pro';
-    if(budget >= 400) return 'Growth';
-    return 'Starter';
-  }
-  function opRateFor(pkg){
-    return pkg==='Pro'? 10 : pkg==='Growth'? 12 : 15; // %
-  }
-  function calc(){
-    const budget = Math.max(0, Number(budgetEl.value||0)); // 만원 단위
-    const cpl = Math.max(1, Number(cplEl.value||1));
-    const leads = Math.floor(budget / cpl);
-    const pkg = recommendPkg(budget);
-    const rate = opRateFor(pkg);
-    const op = Math.round(budget * rate / 100);
-    const channels = chEls.filter(c=>c.checked).map(c=>c.value).join(',');
-
-    leadsEl.textContent = isFinite(leads)? leads.toLocaleString('ko-KR')+' 건' : '-';
-    pkgEl.textContent = pkg;
-    opEl.textContent = isFinite(op)? op.toLocaleString('ko-KR')+' 만원' : '-';
-    const q = new URLSearchParams({ budget:String(budget), cpl:String(cpl), pkg, channels });
-    quoteBtn.href = '/contact?'+q.toString();
-  }
-  [budgetEl, cplEl, ...chEls].forEach(e=> e?.addEventListener('input', calc));
-  calc();
-</script>

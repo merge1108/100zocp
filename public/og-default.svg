@@ -1,15 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
     <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0" stop-color="#7A0019"/>
-      <stop offset="1" stop-color="#CFA15B"/>
+      <stop offset="0" stop-color="#B72222"/>
+      <stop offset="1" stop-color="#E14A3A"/>
     </linearGradient>
   </defs>
-  <rect width="1200" height="630" fill="#F6F9FF"/>
-  <rect x="40" y="40" width="1120" height="550" rx="28" fill="url(#g)" opacity="0.12"/>
+  <rect width="1200" height="630" fill="#FFF1F0"/>
+  <rect x="40" y="40" width="1120" height="550" rx="28" fill="url(#g)" opacity="0.16"/>
   <g fill="#11131a">
     <text x="80" y="210" font-family="'Noto Sans KR', Arial, sans-serif" font-weight="800" font-size="64" fill="#111315">백조마케팅</text>
-    <text x="80" y="280" font-family="'Noto Sans KR', Arial, sans-serif" font-size="28" fill="#111315" opacity="0.95">분양 전략 · 미디어 · 디지털 퍼포먼스 · 브랜딩</text>
-    <text x="80" y="350" font-family="'Noto Sans KR', Arial, sans-serif" font-size="22" fill="#111315" opacity="0.7">100zocp.pages.dev</text>
+    <text x="80" y="280" font-family="'Noto Sans KR', Arial, sans-serif" font-size="28" fill="#111315" opacity="0.95">분양 광고 원스톱</text>
+    <text x="80" y="330" font-family="'Noto Sans KR', Arial, sans-serif" font-size="22" fill="#111315" opacity="0.8">유튜브 영상 제작 · 구글/메타 광고 · 성과 추적</text>
   </g>
 </svg>
+

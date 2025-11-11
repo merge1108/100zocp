@@ -47,5 +47,9 @@ const { name, size = 18 } = Astro.props as Props;
   {name === 'check' && (<path d="m20 6-11 11-5-5" />)}
   {name === 'x' && (<><path d="M18 6 6 18" /><path d="M6 6l12 12" /></>)}
   {name === 'dot' && (<circle cx="12" cy="12" r="3" />)}
+  {name === 'play' && (<path d="M8 5v14l11-7-11-7z" />)}
+  {name === 'video' && (<>
+    <rect x="3" y="7" width="14" height="10" rx="2" />
+    <path d="M17 9l4-2v10l-4-2z" />
+  </>)}
 </svg>
-

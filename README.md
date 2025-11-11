@@ -33,6 +33,7 @@ All commands are run from the root of the project, from a terminal:
 | :------------------------ | :----------------------------------------------- |
 | `npm install`             | Installs dependencies                            |
 | `npm run dev`             | Starts local dev server at `localhost:4321`      |
+| `npm run cms`             | Starts Decap CMS local backend                   |
 | `npm run build`           | Build your production site to `./dist/`          |
 | `npm run preview`         | Preview your build locally, before deploying     |
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
@@ -41,3 +42,11 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+## Local CMS
+
+- Open `http://localhost:4321/admin/` after both processes are running:
+  - Terminal 1: `npm run dev`
+  - Terminal 2: `npm run cms`
+- The CMS uses a local backend in development (`public/admin/config.yml`).
+- For production, GitHub backend is configured via OAuth at `https://100zocp.pages.dev`.

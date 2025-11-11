@@ -1,5 +1,4 @@
-## local_backend는 개발시에만 사용합니다(프로덕션에서는 비활성).
-## local_backend: true
+﻿local_backend: true
 
 backend:
   name: github
@@ -10,32 +9,232 @@ backend:
 
 publish_mode: editorial_workflow
 
-media_folder: "public/uploads"   # 저장소 내 업로드 경로
-public_folder: "/uploads"        # 사이트에서 보이는 경로
+media_folder: "public/uploads"
+public_folder: "/uploads"
 
 collections:
   - name: "site"
-    label: "사이트 기본정보"
+    label: "site"
     files:
+  - name: "site"
+    label: "Site Settings"
+    file: "src/content/site.json"
+    fields:
+      - { label: "Brand", name: "brand", widget: "string" }
+      - { label: "Phone", name: "phone", widget: "string" }
+      - label: "Navigation"
+        name: "nav"
+        widget: "list"
+        fields:
+          - { label: "Label", name: "label", widget: "string" }
+          - { label: "Link", name: "href", widget: "string" }
+          - { label: "CTA", name: "cta", widget: "boolean", required: false }
+      - label: "SEO (Default)"
+        name: "seo"
+        widget: "object"
+        collapsed: true
+        required: false
+        fields:
+          - { label: "Title", name: "title", widget: "string", required: false }
+          - { label: "Description", name: "description", widget: "text", required: false }
+          - { label: "OG Image", name: "og_image", widget: "image", required: false }
       - name: "home"
-        label: "홈"
+        label: "Home"
         file: "src/content/home.json"
         fields:
-          - { label: "헤드라인",   name: "headline", widget: "string" }
-          - { label: "서브카피",   name: "subcopy",  widget: "text", required: false }
-          - { label: "CTA 텍스트", name: "cta_text", widget: "string" }
-          - { label: "CTA 링크",   name: "cta_link", widget: "string", default: "/contact" }
+          - { label: "Hero Title", name: "hero_title", widget: "string" }
+          - { label: "Hero Support", name: "hero_support", widget: "text" }
+          - label: "Hero Badges"
+            name: "hero_badges"
+            widget: "list"
+            field: { label: "Badge", name: "badge", widget: "string" }
+          - label: "Hero CTA"
+            name: "hero_cta"
+            widget: "object"
+            fields:
+              - label: "Primary"
+                name: "primary"
+                widget: "object"
+                fields:
+                  - { label: "Text", name: "text", widget: "string" }
+                  - { label: "Link", name: "link", widget: "string" }
+              - label: "Secondary"
+                name: "secondary"
+                widget: "list"
+                fields:
+                  - { label: "Text", name: "text", widget: "string" }
+              - { label: "Link", name: "link", widget: "string" }
+          - label: "What We Do"
+            name: "what_we_do"
+            widget: "list"
+            fields:
+              - { label: "Kicker", name: "kicker", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Image", name: "image", widget: "image" }
+              - { label: "ALT", name: "alt", widget: "string" }
+          - label: "About"
+            name: "about"
+            widget: "list"
+            fields:
+              - { label: "Kicker", name: "kicker", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Image", name: "image", widget: "image" }
+              - { label: "ALT", name: "alt", widget: "string" }
+          - label: "SEO"
+            name: "seo"
+            widget: "object"
+            collapsed: true
+            required: false
+            fields:
+              - { label: "Title", name: "title", widget: "string", required: false }
+              - { label: "Description", name: "description", widget: "text", required: false }
+              - { label: "OG Image", name: "og_image", widget: "image", required: false }
 
-  - name: "cases"
-    label: "성과/사례"
-    label_singular: "사례"
-    folder: "src/content/cases"
-    create: true
-    slug: "{{slug}}"
-    extension: "json"
-    fields:
-      - { label: "제목",        name: "title",   widget: "string" }
-      - { label: "카테고리",    name: "kicker",  widget: "string" }
-      - { label: "대표 이미지", name: "image",   widget: "image" }
-      - { label: "ALT 텍스트",  name: "alt",     widget: "string" }
-      - { label: "요약",        name: "summary", widget: "text", required: false }
+  - name: "solutions"
+    label: "Solutions"
+    files:
+      - name: "solutions"
+        label: "Solutions Page"
+        file: "src/content/solutions.json"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Intro", name: "intro", widget: "text" }
+          - label: "Problems"
+            name: "problems"
+            widget: "list"
+            fields:
+              - { label: "Icon", name: "icon", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Body", name: "body", widget: "text" }
+          - label: "Composition"
+            name: "composition"
+            widget: "list"
+            fields:
+              - { label: "Icon", name: "icon", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Body", name: "body", widget: "text" }
+          - label: "Channels"
+            name: "channels"
+            widget: "list"
+            fields:
+              - { label: "Icon", name: "icon", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Body", name: "body", widget: "text" }
+          - label: "Flow"
+            name: "flow"
+            widget: "list"
+            fields:
+              - { label: "Icon", name: "icon", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Body", name: "body", widget: "text" }
+          - label: "Upload Goal"
+            name: "upload_goal"
+            widget: "list"
+            fields:
+              - { label: "Icon", name: "icon", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Body", name: "body", widget: "text" }
+          - label: "CTAs"
+            name: "ctas"
+            widget: "object"
+            fields:
+              - label: "Primary"
+                name: "primary"
+                widget: "object"
+                fields:
+                  - { label: "Text", name: "text", widget: "string" }
+                  - { label: "Link", name: "link", widget: "string" }
+              - label: "Secondary"
+                name: "secondary"
+                widget: "list"
+                fields:
+                  - { label: "Text", name: "text", widget: "string" }
+                  - { label: "Link", name: "link", widget: "string" }
+          - label: "SEO"
+            name: "seo"
+            widget: "object"
+            collapsed: true
+            required: false
+            fields:
+              - { label: "Title", name: "title", widget: "string", required: false }
+              - { label: "Description", name: "description", widget: "text", required: false }
+              - { label: "OG Image", name: "og_image", widget: "image", required: false }
+
+  - name: "packages"
+    label: "Packages"
+    files:
+      - name: "packages"
+        label: "Packages Page"
+        file: "src/content/packages.json"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Intro", name: "intro", widget: "text" }
+          - label: "Plans"
+            name: "plans"
+            widget: "list"
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Price Text", name: "price_text", widget: "string" }
+              - { label: "Note", name: "note", widget: "string" }
+              - label: "Bullets"
+                name: "bullets"
+                widget: "list"
+                field: { label: "Item", name: "item", widget: "string" }
+              - label: "CTA"
+                name: "cta"
+                widget: "object"
+                fields:
+                  - { label: "Text", name: "text", widget: "string" }
+                  - { label: "Link", name: "link", widget: "string" }
+          - { label: "Extension Note", name: "extension_note", widget: "text" }
+          - { label: "Options Title", name: "options_title", widget: "string" }
+          - label: "Options"
+            name: "options"
+            widget: "list"
+            fields:
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "Price", name: "price", widget: "string" }
+          - label: "SEO"
+            name: "seo"
+            widget: "object"
+            collapsed: true
+            required: false
+            fields:
+              - { label: "Title", name: "title", widget: "string", required: false }
+              - { label: "Description", name: "description", widget: "text", required: false }
+              - { label: "OG Image", name: "og_image", widget: "image", required: false }
+
+  - name: "contact"
+    label: "Contact"
+    files:
+      - name: "contact"
+        label: "Contact Page"
+        file: "src/content/contact.json"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Intro", name: "intro", widget: "text" }
+          - label: "Fields"
+            name: "fields"
+            widget: "object"
+            fields:
+              - { label: "Site Label", name: "site_label", widget: "string" }
+              - { label: "Site Placeholder", name: "site_placeholder", widget: "string" }
+              - { label: "Role Label", name: "role_label", widget: "string" }
+              - { label: "Role Placeholder", name: "role_placeholder", widget: "string" }
+              - { label: "Name Label", name: "name_label", widget: "string" }
+              - { label: "Name Placeholder", name: "name_placeholder", widget: "string" }
+              - { label: "Phone Label", name: "phone_label", widget: "string" }
+              - { label: "Phone Placeholder", name: "phone_placeholder", widget: "string" }
+              - { label: "Budget Label", name: "budget_label", widget: "string" }
+              - { label: "Budget Placeholder", name: "budget_placeholder", widget: "string" }
+          - { label: "Submit Text", name: "submit_text", widget: "string" }
+          - { label: "Helper Text", name: "helper_text", widget: "text" }
+          - label: "SEO"
+            name: "seo"
+            widget: "object"
+            collapsed: true
+            required: false
+            fields:
+              - { label: "Title", name: "title", widget: "string", required: false }
+              - { label: "Description", name: "description", widget: "text", required: false }
+              - { label: "OG Image", name: "og_image", widget: "image", required: false }
