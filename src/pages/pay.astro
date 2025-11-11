@@ -1,0 +1,74 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+const clientKey = import.meta.env.PUBLIC_TOSS_CLIENT_KEY || "";
+const site = Astro.site?.toString() || "";
+const baseUrl = import.meta.env.PUBLIC_BASE_URL || site;
+---
+<BaseLayout title="결제 데모 | 백조마케팅" desc="토스페이 결제 연동 데모">
+  <main id="main">
+    <section class="section">
+      <div class="container">
+        <h1 class="h2">결제 데모</h1>
+        <p class="muted">테스트 결제입니다. 실제 과금은 발생하지 않습니다.</p>
+
+        <div class="meta" style="max-width:640px">
+          <label style="display:block; font-weight:700; margin:8px 0 6px">주문명</label>
+          <input id="orderName" value="테스트 주문" style="width:100%; padding:12px 14px; border:1px solid var(--border); border-radius:10px" />
+
+          <label style="display:block; font-weight:700; margin:12px 0 6px">금액(원)</label>
+          <input id="amount" type="number" value="1000" min="100" step="100" style="width:100%; padding:12px 14px; border:1px solid var(--border); border-radius:10px" />
+
+          <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:16px">
+            <button class="btn" id="btnToss">토스페이로 결제</button>
+            <button class="btn secondary" id="btnCard" type="button">카드로 결제</button>
+          </div>
+          <small class="muted" style="display:block; margin-top:8px">성공/실패 후 결과 페이지로 이동합니다.</small>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://js.tosspayments.com/v2" async></script>
+  <script is:inline>
+    const clientKey = {clientKey: JSON.stringify(clientKey)}.clientKey.replace(/^"|"$/g, '');
+    function genOrderId(){
+      const t = Date.now();
+      const r = Math.random().toString(36).slice(2,10);
+      return `ORDER-${t}-${r}`;
+    }
+    function base(){
+      const b = {baseUrl: JSON.stringify(baseUrl)}.baseUrl.replace(/^"|"$/g, '');
+      return b || location.origin;
+    }
+    function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+    ready(()=>{
+      const $ = (s)=>document.querySelector(s);
+      const btnToss = $('#btnToss');
+      const btnCard = $('#btnCard');
+      const orderNameEl = $('#orderName');
+      const amountEl = $('#amount');
+      btnToss?.addEventListener('click', async ()=>{
+        await pay('토스페이');
+      });
+      btnCard?.addEventListener('click', async ()=>{
+        await pay('카드');
+      });
+      async function pay(method){
+        if(!window.TossPayments){ alert('결제 스크립트를 불러오는 중입니다. 잠시 후 다시 시도해주세요.'); return; }
+        const toss = TossPayments(clientKey);
+        const orderId = genOrderId();
+        const amount = Math.max(100, Number(amountEl.value||1000));
+        const orderName = String(orderNameEl.value||'주문');
+        await toss.requestPayment(method, {
+          amount,
+          orderId,
+          orderName,
+          successUrl: base()+"/pay/success",
+          failUrl: base()+"/pay/fail",
+          customerName: '고객'
+        });
+      }
+    });
+  </script>
+</BaseLayout>
+

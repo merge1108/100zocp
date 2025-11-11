@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+<BaseLayout title="결제 실패 | 백조마케팅" desc="결제가 실패했습니다.">
+  <main id="main">
+    <section class="section">
+      <div class="container">
+        <h1 class="h2">결제 실패</h1>
+        <div class="meta" id="failBox" style="margin-top:12px">
+          <p class="muted">사유 확인 중...</p>
+        </div>
+        <div style="margin-top:16px; display:flex; gap:12px; flex-wrap:wrap">
+          <a class="btn" href="/pay">다시 결제</a>
+          <a class="btn secondary" href="/">홈으로</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script is:inline>
+    const el = document.getElementById('failBox');
+    const qp = new URLSearchParams(location.search);
+    const code = qp.get('code');
+    const message = qp.get('message');
+    el.innerHTML = `<p><strong>코드:</strong> ${code||'-'}</p><p class="muted">${message||'사유 없음'}</p>`;
+  </script>
+</BaseLayout>
+

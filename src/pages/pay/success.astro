@@ -1,0 +1,43 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+<BaseLayout title="결제 성공 | 백조마케팅" desc="결제가 성공했습니다.">
+  <main id="main">
+    <section class="section">
+      <div class="container">
+        <h1 class="h2">결제 성공</h1>
+        <div class="meta" id="result" style="margin-top:12px">
+          <p class="muted">확인 중...</p>
+        </div>
+        <div style="margin-top:16px; display:flex; gap:12px; flex-wrap:wrap">
+          <a class="btn" href="/">홈으로</a>
+          <a class="btn secondary" href="/pay">다시 결제</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script is:inline>
+    (async ()=>{
+      const el = document.getElementById('result');
+      const qp = new URLSearchParams(location.search);
+      const paymentKey = qp.get('paymentKey');
+      const orderId = qp.get('orderId');
+      const amount = Number(qp.get('amount'));
+      if(!paymentKey || !orderId || !amount){ el.innerHTML = '<p class="muted">필수 정보가 누락되었습니다.</p>'; return; }
+      try{
+        const res = await fetch('/api/payments/confirm', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ paymentKey, orderId, amount })
+        });
+        const data = await res.json();
+        if(!res.ok){ throw new Error(data?.message||'결제 승인 실패'); }
+        el.innerHTML = `<p><strong>주문명:</strong> ${data.orderName||'-'}</p>
+                        <p><strong>결제수단:</strong> ${data.method||'-'}</p>
+                        <p><strong>승인시각:</strong> ${data.approvedAt||'-'}</p>`;
+      }catch(e){
+        el.innerHTML = `<p class="muted">오류: ${e?.message||e}</p>`;
+      }
+    })();
+  </script>
+</BaseLayout>
+
